@@ -14,11 +14,18 @@ steps:
     packageType: sdk
     version: '7.x'
 
-- task: Npm@1
-  displayName: 'Run clean npm install'
+- task: NodeTool@0
   inputs:
-    command: 'ci'  # Recommended for clean installs in pipelines
-    verbose: false
+    versionSpec: '20.x'
+  displayName: 'Use Node.js 20.x'
+
+- script: |
+    npm cache clean --force
+    rm -rf node_modules package-lock.json
+    npm install sass --save-dev
+    npm install
+  displayName: 'Clean npm install with dart-sass'
+
 
 
 - script: './node_modules/.bin/node-sass Tailspin.SpaceGame.Web/wwwroot --output Tailspin.SpaceGame.Web/wwwroot'
